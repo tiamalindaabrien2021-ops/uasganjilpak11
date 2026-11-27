@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UAS Ganjil – Pendidikan Antikorupsi Kelas XI</title>
+<style>
+:root{--bg1:#4f46e5;--bg2:#ec4899;--card:#fff;--tx:#1e1b4b;--mut:#64748b;--line:#e2e8f0;--ok:#16a34a;--rg:#f59e0b;--no:#cbd5e1;--pr:#4f46e5;--bad:#dc2626;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--card:#1e1b3a;--tx:#eef2ff;--mut:#a5b4fc;--line:#3b3768;--no:#4b5563}}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--tx);user-select:none;-webkit-user-select:none}
+.wrap{max-width:980px;margin:0 auto;padding:14px}
+.card{background:var(--card);border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+h1{margin:0 0 4px;font-size:1.4rem}.sub{color:var(--mut);margin:0 0 16px;font-size:.92rem}
+label{display:block;font-weight:600;font-size:.85rem;margin:10px 0 4px}
+input,select{width:100%;padding:11px 12px;border:2px solid var(--line);border-radius:10px;font-size:1rem;background:transparent;color:var(--tx)}
+input:focus{outline:none;border-color:var(--pr)}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:11px 18px;font-weight:600;color:#fff;background:var(--pr)}
+button.rg{background:var(--rg);color:#1f1300}button.gr{background:var(--no);color:var(--tx)}button.bad{background:var(--bad)}
+button:disabled{opacity:.4;cursor:not-allowed}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.err{color:var(--bad);font-size:.88rem;min-height:1.2em;margin-top:8px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;color:#fff}
+.timer{background:rgba(0,0,0,.35);padding:8px 16px;border-radius:999px;font-weight:700;font-variant-numeric:tabular-nums}
+.timer.low{background:var(--bad)}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:800px){.grid{grid-template-columns:1fr 280px}}
+.q{font-size:1.08rem;line-height:1.5;margin:6px 0 14px}
+.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:transparent;color:var(--tx);border:2px solid var(--line);margin-bottom:8px;padding:12px}
+.opt b{flex:0 0 28px;height:28px;border-radius:50%;background:var(--line);display:grid;place-items:center}
+.opt.sel{border-color:var(--pr);background:rgba(79,70,229,.12)}.opt.sel b{background:var(--pr);color:#fff}
+.nav{display:flex;gap:8px;justify-content:space-between;margin-top:14px;flex-wrap:wrap}
+.nums{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.n{padding:9px 0;text-align:center;background:var(--no);color:var(--tx);border-radius:8px}
+.n.a{background:var(--ok);color:#fff}.n.r{background:var(--rg);color:#1f1300}.n.c{outline:3px solid var(--pr);outline-offset:1px}
+.leg{display:flex;gap:10px;flex-wrap:wrap;font-size:.78rem;color:var(--mut);margin-top:12px}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:grid;place-items:center;padding:20px;z-index:9}
+.modal .card{max-width:440px;text-align:center}
+.score{font-size:3.4rem;font-weight:800;color:var(--pr);margin:4px 0}
+.info{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:10px 0;font-size:.95rem}.info span{color:var(--mut)}
+.rv{border:2px solid var(--line);border-radius:12px;padding:14px;margin-top:12px;user-select:text;-webkit-user-select:text}
+.rv.ok{border-color:var(--ok)}.rv.ko{border-color:var(--bad)}
+.exp{background:rgba(79,70,229,.1);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:.92rem}
+.hide{display:none}
+</style></head><body>
+<div class="wrap" id="app"></div>
+<script>
+// ====== PENGATURAN (ubah sesuai kebutuhan guru) ======
+const TOKEN="UAS2026", DURASI_MENIT=90;
+// ====== BANK SOAL: soal~A~B~C~D~E~kunci~pembahasan ======
+const RAW=`Jujur adalah ....~mengatakan hal yang menyenangkan semua orang~selarasnya perkataan, perbuatan, dan kenyataan yang sebenarnya~menyembunyikan kesalahan agar tidak dihukum~selalu diam supaya tidak salah bicara~berbicara blak-blakan tanpa memedulikan perasaan orang lain~B~Jujur berarti ucapan, tindakan, dan kenyataan selaras.
+Contoh perilaku jujur saat ujian adalah ....~bertukar jawaban dengan teman sebangku~membuka catatan secara sembunyi-sembunyi~memanfaatkan bocoran soal dari kakak kelas~mengerjakan soal sendiri sesuai kemampuan~meminta teman memberi kode jawaban~D~Mengerjakan sendiri adalah wujud kejujuran akademik.
+Rani menemukan dompet berisi uang di kantin sekolah. Sikap yang tepat adalah ....~menyerahkan dompet kepada guru atau petugas sekolah agar dikembalikan kepada pemiliknya~mengambil uangnya lalu membuang dompetnya~membagi uang dengan teman agar tidak ketahuan~membiarkan dompet tersebut karena bukan miliknya~mengembalikan dompet setelah mengambil sebagian uangnya~A~Barang temuan harus dikembalikan kepada pemiliknya lewat pihak yang berwenang.
+Di sekolah terdapat kantin kejujuran tanpa penjaga. Sikap siswa yang jujur adalah ....~mengambil barang tanpa membayar karena tidak ada yang melihat~membayar kurang dari harga yang tertera~membayar setengah harga karena uang saku menipis~mengambil uang kembalian lebih banyak dari seharusnya~membayar sesuai harga dan mengambil kembalian sesuai haknya~E~Jujur tetap dilakukan meski tidak ada yang mengawasi.
+Kejujuran berperan penting dalam pencegahan korupsi karena ....~membuat seseorang cepat kaya~membuat seseorang terkenal~menumbuhkan integritas sehingga seseorang tidak tergoda menyalahgunakan amanah~membuat seseorang terbebas dari aturan~mempermudah seseorang memenangkan persaingan~C~Kejujuran membangun integritas yang menjaga amanah.
+Sebagai bendahara kelas, perilaku jujur ditunjukkan dengan ....~mencatat pengeluaran lebih besar dan menyimpan selisihnya~meminjam uang kas diam-diam lalu mengembalikannya tanpa dicatat~mencatat pemasukan dan pengeluaran apa adanya serta melaporkannya secara terbuka~melaporkan keuangan hanya jika ada yang bertanya~membulatkan jumlah uang kas agar laporan terlihat rapi~C~Pencatatan apa adanya dan transparan mencerminkan kejujuran dan akuntabilitas.
+Teman meminta contekan jawaban PR kepadamu. Respons yang paling tepat adalah ....~menolak dengan sopan dan menawarkan belajar bersama~memberikan jawaban dengan imbalan traktiran~memberikan jawaban secara diam-diam~berpura-pura tidak mendengar permintaannya~memberikan jawaban asal tidak ketahuan guru~A~Menolak dengan sopan sambil membantu belajar adalah sikap jujur sekaligus peduli.
+Integritas berarti ....~kecerdasan dalam menyelesaikan masalah~jabatan tinggi dalam suatu organisasi~kekayaan yang diperoleh dengan cepat~kepatuhan karena takut diawasi~konsistensi antara nilai yang diyakini, ucapan, dan tindakan~E~Integritas adalah konsistensi nilai, ucapan, dan tindakan.
+Dina meminta uang buku Rp150.000 kepada orang tuanya padahal harga buku Rp100.000, dan selisihnya dipakai untuk jajan. Tindakan Dina merupakan ....~bentuk kehematan~ketidakjujuran yang merupakan bibit perilaku koruptif~wujud tanggung jawab~wujud kedisiplinan~tindakan yang wajar dilakukan pelajar~B~Menggelembungkan harga adalah ketidakjujuran, cikal bakal korupsi.
+Berikut yang bukan termasuk sembilan nilai antikorupsi adalah ....~peduli~berani~kerja keras~licik~adil~D~Sembilan nilai: jujur, peduli, mandiri, disiplin, tanggung jawab, kerja keras, sederhana, berani, adil. Licik bukan termasuk.
+Sikap jujur ketika melakukan kesalahan adalah ....~menyalahkan teman agar terhindar dari hukuman~mengakui kesalahan dan siap menerima konsekuensinya~berpura-pura tidak tahu~mencari alasan yang meyakinkan~menunggu sampai kesalahan dilupakan~B~Jujur berarti mengakui kesalahan dan berani menanggung akibatnya.
+Guru salah menjumlah sehingga nilai ulangan Budi lebih tinggi dari yang seharusnya. Sikap jujur Budi adalah ....~diam saja karena menguntungkan~senang dalam hati dan tidak bercerita kepada siapa pun~menceritakannya hanya kepada teman dekat~berharap guru tidak menyadari kesalahannya~melapor kepada guru agar nilainya diperbaiki~E~Nilai yang bukan haknya harus dilaporkan dan dikoreksi.
+Menyontek termasuk ....~ketidakjujuran akademik yang dapat menjadi bibit korupsi~strategi belajar yang efektif~bentuk kerja sama yang baik~perbuatan yang wajar dilakukan~hak setiap siswa~A~Menyontek adalah kecurangan yang membiasakan perilaku koruptif.
+Ketua OSIS menyusun laporan pertanggungjawaban dana kegiatan. Sikap yang jujur adalah ....~menaikkan harga pada nota agar ada sisa dana~membuat nota fiktif untuk menutupi kekurangan~menyusun laporan sesuai bukti pengeluaran yang sebenarnya~menghilangkan nota yang tidak menguntungkan~tidak membuat laporan karena kegiatan sudah selesai~C~Laporan harus sesuai bukti nyata agar transparan.
+Dampak kebiasaan berbohong meskipun dalam hal kecil adalah ....~semakin dipercaya orang lain~semakin disukai teman~mudah meraih kesuksesan~hilangnya kepercayaan dan terbentuknya kebiasaan berbuat curang~tidak berdampak apa pun karena hanya hal kecil~D~Kebohongan kecil mengikis kepercayaan dan menumbuhkan kebiasaan curang.
+Orang tua siswa memberikan hadiah mahal kepada wali kelas agar anaknya naik kelas meski nilainya kurang. Hal tersebut termasuk ....~ucapan terima kasih yang wajar~suap atau gratifikasi yang harus ditolak~donasi sukarela untuk sekolah~penghargaan atas prestasi siswa~budaya sopan santun~B~Pemberian dengan maksud memengaruhi keputusan adalah suap/gratifikasi.
+Kamu mengetahui temanmu berbuat curang saat ujian. Sikap yang tepat adalah ....~mengingatkannya dan, jika perlu, melaporkannya kepada guru dengan cara yang baik~membiarkannya karena bukan urusanmu~ikut menyontek agar adil~menyebarkan kecurangannya sambil mengejeknya~mengancamnya agar memberi imbalan~A~Berani dan peduli: mengingatkan dengan baik, lalu melapor bila perlu.
+Disiplin adalah ....~sikap patuh karena takut dihukum~sikap keras terhadap orang lain~ketaatan terhadap aturan yang berlaku yang timbul dari kesadaran diri~kebebasan melakukan apa saja~kemampuan bekerja tanpa istirahat~C~Disiplin lahir dari kesadaran diri menaati aturan.
+Hubungan antara disiplin dan pencegahan korupsi adalah ....~tidak ada hubungan sama sekali~disiplin justru menghambat kreativitas~disiplin hanya diperlukan di lingkungan militer~disiplin hanya penting di sekolah~disiplin membiasakan seseorang menaati aturan sehingga tidak menyalahgunakan wewenang~E~Orang disiplin terbiasa menaati aturan sehingga tidak menyalahgunakan wewenang.
+Contoh disiplin waktu di sekolah adalah ....~titip absen kepada teman~sering datang terlambat dengan alasan macet~meninggalkan pelajaran tanpa izin~hadir tepat waktu dan mengumpulkan tugas sesuai batas waktu~mengerjakan tugas setelah ditagih guru~D~Tepat waktu dan taat tenggat adalah disiplin waktu.
+Andi terlambat karena bangun kesiangan. Sikap disiplin yang tepat adalah ....~memanjat pagar agar tidak ketahuan~mengakui keterlambatan, mengikuti prosedur sekolah, dan memperbaiki kebiasaan~berbohong bahwa ban motornya bocor~memalsukan surat izin~pulang dan tidak masuk sekolah~B~Mengakui, menaati prosedur, dan memperbaiki diri adalah sikap disiplin.
+Titip absen kepada teman merupakan ....~pelanggaran disiplin sekaligus ketidakjujuran~wujud solidaritas~wujud kedisiplinan~bentuk gotong royong~hal yang wajar~A~Titip absen melanggar aturan dan memalsukan kehadiran.
+Pegawai yang menggunakan jam kerja untuk kepentingan pribadi, seperti berbelanja atau bermain gim, melakukan ....~efisiensi waktu~kerja cerdas~korupsi waktu~inovasi kerja~kerja sama tim~C~Memakai jam kerja untuk urusan pribadi disebut korupsi waktu.
+Manfaat menyusun jadwal belajar secara teratur adalah ....~membuat waktu bermain hilang~membuat belajar menjadi beban~membuat nilai otomatis sempurna~membuat siswa tergantung pada orang lain~melatih pengelolaan waktu dan konsistensi dalam menyelesaikan tugas~E~Jadwal teratur melatih manajemen waktu dan konsistensi.
+Siswa yang berkendara sepeda motor menunjukkan disiplin dengan cara ....~mengebut saat jalan sepi~melanggar rambu jika tidak ada polisi~tidak memakai helm pada jarak dekat~memakai helm dan mematuhi rambu lalu lintas meskipun tidak ada petugas~menerobos lampu merah saat terburu-buru~D~Disiplin berarti taat aturan meski tanpa pengawasan.
+Sikap yang menunjukkan disiplin saat mengantre di koperasi sekolah adalah ....~menyerobot barisan agar cepat selesai~mengantre sesuai urutan kedatangan~menitipkan pesanan kepada teman di barisan depan~membayar teman agar bersedia bertukar tempat~memaksa petugas melayani lebih dahulu~B~Mengantre sesuai urutan menghormati aturan dan hak orang lain.
+Tugas harus dikumpulkan besok, tetapi Reza belum menyelesaikannya karena terlalu lama bermain gim. Sikap disiplin yang tepat adalah ....~segera mengerjakannya dan belajar menyusun skala prioritas~menyalin tugas teman~beralasan sakit agar diberi perpanjangan waktu~tidak mengumpulkan tugas~meminta orang lain mengerjakannya~A~Segera mengerjakan dan belajar memprioritaskan adalah wujud disiplin.
+Ciri orang yang disiplin adalah ....~patuh hanya ketika diawasi~menaati aturan jika menguntungkan dirinya~menunda pekerjaan sampai mendekati batas waktu~mencari celah dari aturan~konsisten menaati aturan baik saat diawasi maupun tidak~E~Orang disiplin konsisten, diawasi atau tidak.
+Sekolah melarang membawa ponsel saat ujian. Sikap disiplin Sinta adalah ....~menyembunyikan ponsel di saku~memakai ponsel saat pengawas lengah~menitipkan ponsel di tempat yang disediakan sebelum ujian~meminjamkan ponselnya kepada teman~membawa ponsel dan mematikannya sambil diselipkan di buku~C~Menitipkan ponsel sesuai aturan adalah kepatuhan yang sebenarnya.
+Contoh disiplin belajar yang baik adalah ....~belajar hanya saat akan ujian~belajar ketika suasana hati sedang baik~menunda belajar hingga semalam sebelum ulangan~belajar secara teratur sesuai jadwal~belajar hanya mata pelajaran yang disukai~D~Belajar teratur sesuai jadwal adalah disiplin belajar.
+Kebiasaan menunda pekerjaan (prokrastinasi) bertentangan dengan nilai ....~kepedulian~kedisiplinan~keberanian~keadilan~kesederhanaan~B~Menunda pekerjaan melanggar nilai disiplin.
+Pejabat yang sering meninggalkan kantor pada jam kerja untuk urusan pribadi telah melakukan ....~pelanggaran disiplin dan bentuk korupsi waktu~fleksibilitas kerja~hak sebagai pejabat~efisiensi anggaran~kerja keras~A~Meninggalkan tugas untuk urusan pribadi melanggar disiplin dan merupakan korupsi waktu.
+Membuang sampah pada tempatnya dan mengikuti jadwal piket kebersihan merupakan contoh disiplin dalam ....~lingkungan yang bersifat sosial~bidang ekonomi~bidang politik~kegiatan olahraga~menjaga kebersihan dan ketertiban lingkungan~E~Kedua perilaku itu menjaga kebersihan dan ketertiban lingkungan.
+Siswa yang melanggar tata tertib dan dikenai sanksi sebaiknya ....~memprotes dan menyalahkan guru~mencari kesalahan orang lain~menerima sanksi dengan lapang dada dan berjanji tidak mengulangi~mengulangi pelanggaran secara diam-diam~mengancam guru yang memberi sanksi~C~Menerima sanksi dan berjanji memperbaiki diri menunjukkan disiplin dan tanggung jawab.
+Tanggung jawab adalah ....~sikap menyalahkan orang lain atas kegagalan~sikap menunggu perintah sebelum bertindak~sikap menghindari tugas yang sulit~sikap melaksanakan tugas dan kewajiban sebaik-baiknya serta berani menanggung akibatnya~sikap membagi tugas kepada orang lain~D~Tanggung jawab: menjalankan kewajiban dengan baik dan siap menanggung akibatnya.
+Dalam kerja kelompok, beberapa anggota tidak mengerjakan bagiannya. Sikap ketua kelompok yang bertanggung jawab adalah ....~mengerjakan semuanya sendiri dan melaporkan hasil atas namanya~mengingatkan anggota, membantu mencari solusi, dan memastikan tugas selesai~membiarkan anggota tersebut dan tidak mencantumkan nama mereka tanpa bicara~menyerahkan masalah kepada guru tanpa berusaha~membubarkan kelompok~B~Ketua memastikan tugas selesai dengan mengingatkan dan mencari solusi.
+Siswa yang mendapat jadwal piket menunjukkan tanggung jawab dengan cara ....~melaksanakan piket sesuai jadwal tanpa diperintah~menukar jadwal piket dengan imbalan uang~menyuruh teman lain menggantikan~datang terlambat agar piket selesai~berpura-pura sakit saat jadwal piket~A~Menjalankan kewajiban tanpa disuruh adalah tanggung jawab.
+Buku pinjaman dari perpustakaan hilang. Sikap bertanggung jawab adalah ....~mengembalikan buku lain yang berbeda~diam saja karena tidak ada yang tahu~menyalahkan penjaga perpustakaan~berbohong bahwa buku sudah dikembalikan~melapor kepada petugas dan menggantinya sesuai aturan~E~Melapor dan mengganti sesuai aturan adalah wujud tanggung jawab.
+Seorang siswa menerima bantuan dana pendidikan dari pemerintah. Sikap bertanggung jawab adalah ....~memakainya untuk membeli gawai terbaru~membagikannya kepada teman agar terlihat dermawan~menggunakannya sesuai peruntukan, yaitu untuk keperluan pendidikan~menyimpannya tanpa pernah digunakan~meminjamkannya kepada orang lain dengan bunga~C~Dana bantuan harus dipakai sesuai peruntukannya.
+Setelah kegiatan sekolah selesai, panitia wajib menyampaikan laporan pertanggungjawaban. Tujuannya adalah ....~memamerkan keberhasilan panitia~menjamin akuntabilitas dan transparansi penggunaan dana~mencari kesalahan anggota panitia~menjadi bukti pelaksanaan kegiatan saja~menunjukkan kekuasaan ketua panitia~B~Laporan menjamin akuntabilitas dan transparansi dana.
+Bentuk tanggung jawab siswa terhadap lingkungan sekolah adalah ....~mencoret dinding agar kreatif~menjaga kebersihan, merawat fasilitas, dan tidak merusaknya~membiarkan sampah berserakan karena ada petugas kebersihan~memetik tanaman sesuka hati~membiarkan keran air menyala~B~Menjaga dan merawat fasilitas sekolah adalah tanggung jawab terhadap lingkungan.
+Pejabat yang tidak bertanggung jawab atas amanahnya dan menyalahgunakan anggaran akan menyebabkan ....~kerugian negara dan masyarakat~kemajuan pembangunan~peningkatan pelayanan publik~kesejahteraan masyarakat~kepercayaan publik meningkat~A~Penyalahgunaan anggaran merugikan negara dan masyarakat.
+Dani tidak sengaja memecahkan kaca jendela kelas. Sikap bertanggung jawab Dani adalah ....~pergi sebelum ada yang melihat~menyalahkan teman yang berada di dekatnya~berbohong bahwa kaca sudah pecah sebelumnya~menunggu ada yang melapor~melapor kepada guru dan bersedia mengganti atau memperbaikinya~E~Melapor dan siap mengganti adalah tanggung jawab.
+Tanggung jawab utama seorang pelajar adalah ....~mencari uang untuk keluarga~mengikuti semua organisasi sekaligus~belajar dengan sungguh-sungguh dan menaati tata tertib sekolah~membantu guru menilai pekerjaan teman~menentukan aturan sekolah~C~Tugas utama pelajar adalah belajar sungguh-sungguh dan menaati tata tertib.
+Warga sekolah mengetahui adanya dugaan penyalahgunaan dana sekolah. Tindakan yang bertanggung jawab adalah ....~menyebarkan tuduhan di media sosial tanpa bukti~membiarkannya karena takut mendapat masalah~ikut menikmati hasilnya~mengumpulkan informasi yang benar lalu melaporkannya kepada pihak berwenang melalui jalur resmi~mengancam pelakunya agar memberi uang tutup mulut~D~Laporkan dengan data benar melalui jalur resmi, bukan menyebar tuduhan.
+Proyek kelompok gagal karena kelalaianmu. Sikap bertanggung jawab adalah ....~mengakui kelalaian, meminta maaf, dan membantu memperbaiki hasilnya~menyalahkan teman yang bekerja paling lambat~berpura-pura tidak tahu penyebabnya~keluar dari kelompok~menyalahkan guru karena tugasnya terlalu sulit~A~Mengakui kelalaian dan membantu memperbaiki adalah tanggung jawab.
+Mengikuti kerja bakti membersihkan lingkungan merupakan bentuk tanggung jawab ....~pribadi semata~sosial~politik~ekonomi~spiritual saja~B~Kerja bakti adalah tanggung jawab sosial terhadap lingkungan bersama.
+Hubungan antara nilai jujur, disiplin, dan tanggung jawab adalah ....~ketiganya berdiri sendiri dan tidak berkaitan~hanya jujur yang berpengaruh terhadap pencegahan korupsi~disiplin dan tanggung jawab lebih penting daripada jujur~ketiganya hanya diperlukan oleh pejabat~ketiganya saling melengkapi dalam membentuk pribadi berintegritas yang antikorupsi~E~Ketiga nilai saling melengkapi membentuk pribadi berintegritas.
+Korupsi adalah ....~kegiatan ekonomi yang menghasilkan keuntungan~pinjaman uang tanpa bunga~penyalahgunaan kekuasaan atau amanah untuk memperoleh keuntungan pribadi atau kelompok~pemberian sedekah kepada sesama~pembagian keuntungan secara adil~C~Korupsi: penyalahgunaan kekuasaan/amanah demi keuntungan pribadi atau kelompok.
+Upaya paling efektif mencegah korupsi sejak dini di lingkungan sekolah adalah ....~memberikan hukuman berat tanpa pendidikan karakter~mengawasi siswa secara ketat setiap saat~menghapus semua kegiatan yang melibatkan dana~membiasakan perilaku jujur, disiplin, dan bertanggung jawab dalam kegiatan sehari-hari~membiarkan siswa menyelesaikan masalahnya sendiri~D~Pembiasaan nilai antikorupsi sejak dini paling efektif.`;
+const Q=RAW.trim().split("\n").map((l,i)=>{const p=l.split("~");return{id:i+1,q:p[0],o:p.slice(1,6),k:"ABCDE".indexOf(p[6]),e:p[7]}});
+const L="ABCDE",$=app=document.getElementById("app");
+let U={},order=[],ans={},flag={},cur=0,left=0,tick=null,warned=false,mode="login",lastEv=0;
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function login(){mode="login";$.innerHTML=`<div class="card" style="max-width:520px;margin:20px auto"><h1>📝 Ujian Akhir Semester Ganjil</h1><p class="sub">Pendidikan Antikorupsi – Kelas XI · ${Q.length} soal · ${DURASI_MENIT} menit</p>
+<label>Nama Siswa</label><input id="nm" placeholder="Nama lengkap">
+<div class="row"><div><label>Kelas</label><input id="kl" placeholder="XI IPA 1"></div><div><label>Nomor Peserta Didik</label><input id="np" placeholder="NIS / No. Peserta"></div></div>
+<label>Asal Sekolah</label><input id="sk" placeholder="Nama sekolah">
+<label>Token Ujian</label><input id="tk" placeholder="Masukkan token dari pengawas" autocomplete="off">
+<div class="err" id="er"></div>
+<p class="sub" style="font-size:.8rem">⚠️ Selama ujian, berpindah tab/jendela terdeteksi sebagai kecurangan. Peringatan hanya satu kali; pelanggaran kedua mengakhiri ujian otomatis.</p>
+<button style="width:100%" onclick="mulai()">Mulai Ujian</button></div>`}
+function mulai(){const g=i=>document.getElementById(i).value.trim();U={nm:g("nm"),kl:g("kl"),np:g("np"),sk:g("sk")};
+const er=document.getElementById("er");
+if(!U.nm||!U.kl||!U.np||!U.sk){er.textContent="Lengkapi semua data terlebih dahulu.";return}
+if(g("tk").toUpperCase()!==TOKEN){er.textContent="Token salah. Minta token kepada pengawas.";return}
+order=sh(Q.map((_,i)=>i));ans={};flag={};cur=0;warned=false;left=DURASI_MENIT*60;mode="exam";lastEv=Date.now()+1500;
+try{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}
+draw();tick=setInterval(()=>{left--;if(left<=0){selesai("Waktu habis")}else{const t=document.getElementById("tm");if(t){t.textContent=fmt(left);t.classList.toggle("low",left<300)}}},1000)}
+const fmt=s=>String(s/60|0).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+function draw(){const q=Q[order[cur]],k=order[cur];
+const nav=order.map((x,i)=>`<button class="n ${ans[x]!=null&&!flag[x]?"a":""} ${flag[x]?"r":""} ${i==cur?"c":""}" onclick="go(${i})">${i+1}</button>`).join("");
+const na=Object.keys(ans).length;
+$.innerHTML=`<div class="top"><div><b>${esc(U.nm)}</b> · ${esc(U.kl)}</div><div class="timer" id="tm">${fmt(left)}</div></div>
+<div class="grid"><div class="card"><div class="sub">Soal ${cur+1} dari ${Q.length}${flag[k]?" · 🟠 Ragu-ragu":""}</div><div class="q">${esc(q.q)}</div>
+${q.o.map((t,i)=>`<button class="opt ${ans[k]===i?"sel":""}" onclick="pilih(${i})"><b>${L[i]}</b><span>${esc(t)}</span></button>`).join("")}
+<div class="nav"><button class="gr" onclick="go(${cur-1})" ${cur==0?"disabled":""}>◀ Sebelumnya</button>
+<button class="rg" onclick="ragu()">${flag[k]?"Batal Ragu-ragu":"Ragu-ragu"}</button>
+${cur<Q.length-1?`<button onclick="go(${cur+1})">Selanjutnya ▶</button>`:`<button class="bad" onclick="konfirm()">Selesai ✔</button>`}</div></div>
+<div class="card"><b>Navigasi Soal</b><div class="sub" style="margin:2px 0 10px">Terjawab ${na} · Belum ${Q.length-na}</div><div class="nums">${nav}</div>
+<div class="leg"><span><i style="background:var(--ok)"></i>Dijawab</span><span><i style="background:var(--rg)"></i>Ragu-ragu</span><span><i style="background:var(--no)"></i>Belum</span></div>
+<button class="bad" style="width:100%;margin-top:14px" onclick="konfirm()">Kumpulkan Jawaban</button></div></div>`}
+function go(i){if(i>=0&&i<Q.length){cur=i;draw()}}
+function pilih(i){ans[order[cur]]=i;draw()}
+function ragu(){const k=order[cur];flag[k]=!flag[k];draw()}
+function modal(h){const m=document.createElement("div");m.className="modal";m.id="md";m.innerHTML=`<div class="card">${h}</div>`;document.body.appendChild(m)}
+function tutup(){const m=document.getElementById("md");m&&m.remove()}
+function konfirm(){const na=Object.keys(ans).length,nr=Object.values(flag).filter(Boolean).length;
+modal(`<h1>Kumpulkan jawaban?</h1><p class="sub">Terjawab ${na} dari ${Q.length}. Belum dijawab ${Q.length-na}. Ragu-ragu ${nr}.</p><button class="gr" onclick="tutup()">Kembali</button> <button class="bad" onclick="tutup();selesai('Dikumpulkan siswa')">Ya, Kumpulkan</button>`)}
+function pelanggaran(why){if(mode!=="exam"||Date.now()-lastEv<1200)return;lastEv=Date.now();
+if(!warned){warned=true;tutup();modal(`<div style="font-size:3rem">🚨</div><h1>Peringatan Kecurangan!</h1><p>Terdeteksi: <b>${why}</b>.</p><p class="sub">Ini peringatan satu-satunya. Jika terulang, ujian langsung diakhiri dan jawaban dikumpulkan otomatis.</p><button onclick="tutup()">Saya Mengerti</button>`)}
+else selesai("Ujian dihentikan: kecurangan berulang ("+why+")")}
+document.addEventListener("visibilitychange",()=>{if(document.hidden)pelanggaran("berpindah tab atau meminimalkan jendela")});
+window.addEventListener("blur",()=>setTimeout(()=>{if(mode==="exam"&&!document.hasFocus()&&!document.hidden)pelanggaran("keluar dari jendela ujian")},400));
+document.addEventListener("fullscreenchange",()=>{if(!document.fullscreenElement)pelanggaran("keluar dari layar penuh")});
+["contextmenu","copy","cut","paste","dragstart"].forEach(e=>document.addEventListener(e,ev=>{if(mode==="exam")ev.preventDefault()}));
+document.addEventListener("keydown",e=>{if(mode==="exam"&&(e.key==="F12"||e.key==="PrintScreen"||(e.ctrlKey&&["c","u","s","p","a"].includes(e.key.toLowerCase()))||(e.ctrlKey&&e.shiftKey)))e.preventDefault()});
+window.addEventListener("beforeunload",e=>{if(mode==="exam"){e.preventDefault();e.returnValue=""}});
+function selesai(alasan){if(mode==="done")return;mode="done";clearInterval(tick);tutup();try{document.fullscreenElement&&document.exitFullscreen()}catch(e){}
+let b=0;order.forEach(i=>{if(ans[i]===Q[i].k)b++});const n=Math.round(b/Q.length*100*100)/100;
+const rv=order.map((i,x)=>{const q=Q[i],a=ans[i],ok=a===q.k;return`<div class="rv ${ok?"ok":"ko"}"><b>${x+1}. ${ok?"✅ Benar":a==null?"⬜ Tidak dijawab":"❌ Salah"}</b><div class="q" style="font-size:1rem">${esc(q.q)}</div>
+${q.o.map((t,j)=>`<div style="padding:2px 0;${j===q.k?"color:var(--ok);font-weight:700":j===a?"color:var(--bad)":""}">${L[j]}. ${esc(t)}${j===q.k?" ✔":""}${j===a&&!ok?" (jawabanmu)":""}</div>`).join("")}
+<div class="exp"><b>Pembahasan:</b> ${esc(q.e)}</div></div>`}).join("");
+$.innerHTML=`<div class="card" style="text-align:center"><h1>🎓 Hasil Ujian</h1><p class="sub">${esc(alasan)}</p><div class="score">${n}</div><div class="sub">Benar ${b} · Salah ${Object.keys(ans).length-b} · Kosong ${Q.length-Object.keys(ans).length}</div>
+<div class="info" style="display:inline-grid;text-align:left"><span>Nama</span><b>${esc(U.nm)}</b><span>Kelas</span><b>${esc(U.kl)}</b><span>No. Peserta</span><b>${esc(U.np)}</b><span>Asal Sekolah</span><b>${esc(U.sk)}</b></div></div>
+<h1 style="color:#fff;margin:18px 0 0">Jawaban &amp; Pembahasan</h1>${rv}`;window.scrollTo(0,0)}
+login();
+</script></body></html>
